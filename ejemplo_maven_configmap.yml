@@ -6,4 +6,4 @@ data:
   APP_NAME: ejemplo-maven
   APP_TARGET: task
   GRUPO: Grupo1
-  MODULO: 7
+  MODULO: "7"
