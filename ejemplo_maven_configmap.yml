@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ejemplo-maven-env-vars
+data:
+  APP_NAME: ejemplo-maven
+  APP_TARGET: task
+  GRUPO: Grupo1
+  MODULO: 7

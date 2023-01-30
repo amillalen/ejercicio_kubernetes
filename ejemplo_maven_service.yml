@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ejemplo-maven
+spec:
+  ports:
+    - name: service-port
+      port: 80
+      protocol: TCP
+      targetPort: 8081
+  selector:
+    app: ejemplo-maven
+  type: ClusterIP

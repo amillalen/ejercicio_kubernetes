@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ejemplo-maven-deployment
+  namespace: default
+  labels:
+     app: ejemplo-maven
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ejemplo-maven
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      name: ejemplo-maven
+      namespace: default
+      labels:
+        app: ejemplo-maven
+    spec:
+      containers:
+      - name: ejemplo-maven
+        image: amillalen/usach-ejemplo-maven:latest
+        volumeMounts:
+          - name: secret-data
+            mountPath: /mounted-vars/
+        env:
+          - name: JAVA_VERSION
+            value: "8"
+        envFrom:
+          - configMapRef:
+              name: ejemplo-maven-env-vars
+        ports:
+        - containerPort: 8081
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 500m
+          requests:
+            cpu: 200m
+        livenessProbe:
+          httpGet:
+            path: /rest/mscovid/test?msg=testing
+            port: 8081
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /rest/mscovid/test?msg=testing
+            port: 8081
+          initialDelaySeconds: 10
+          periodSeconds: 10
+      volumes:
+        - name: secret-data
+          secret:
+            secretName: ejemplo-maven-secrets
